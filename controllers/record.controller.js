@@ -14,7 +14,7 @@ async function create(req, res) {
     // body.bdb.bc_tx_address = response.bc.
     body.bdb.bc_tx_address = "tx_12345";
 
-    response.bdb = await bdb.create(body.bdb)
+    response.bdb = await bdb.create(body.bdb, res)
 
     res.status(200).json(response).end()
 }

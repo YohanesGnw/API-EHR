@@ -3,7 +3,7 @@ const bdb = require('../bdb'),
     controllers = {disease: require('../controllers/disease.controller')},
     Record = require("../models/Record");
 
-async function create(data) {
+async function create(data, res) {
     data.hospital = await hospitals.findOne({
         'bc_address': data.hospital.bc_address
     })
@@ -14,7 +14,7 @@ async function create(data) {
     // Create Disease if not exists
     if (disease == null) {
         const response = await controllers.disease.create(data)
-        disease = response.asset.data
+        disease = response.asset
     }
 
     receipt.disease = disease
@@ -30,7 +30,8 @@ async function create(data) {
         record,
         null,
         data.hospital.ed25519_private_key,
-        data.hospital.ed25519_public_key
+        data.hospital.ed25519_public_key,
+        res
     )
 
     receipt.record = response.asset.data
