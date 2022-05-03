@@ -52,16 +52,17 @@ async function index(data) {
 }
 
 async function read(data) {
-    console.log("params:", data)
+
     const disease = await controllers.disease.read({
         patient: {bc_address: data.patient},
         hospital: {bc_address: data.hospital},
-        disease: {name: data.disease}
+        disease: {name: data.disease},
     })
 
-    return bdb.assets.find({
+    return bdb.assets.findOne({
         'data.model': "Record",
         'data.disease_id': disease.data._id,
+        'data.date': data.date
     });
 }
 

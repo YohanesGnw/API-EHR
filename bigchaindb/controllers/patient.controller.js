@@ -1,5 +1,6 @@
 const bdb = require('../bdb'),
     driver = bdb.driver,
+    assets = bdb.assets,
     Patient = require('../models/Patient');
 
 async function create(data, res) {
@@ -25,6 +26,20 @@ async function create(data, res) {
     );
 }
 
+async function read(data) {
+    return await assets.findOne({
+        'data.model': "Patient",
+        'data.bc_address': data.patient
+    });
+}
+
+async function index(data) {
+    return assets.findOne({
+        'data.model': "Patient",
+    });
+}
+
+
 module.exports = {
-    create
+    create, read, index
 }

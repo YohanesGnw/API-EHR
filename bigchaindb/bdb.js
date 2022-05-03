@@ -29,7 +29,7 @@ async function create_tx(data, metadata, privateKey, publicKey, res) {
 
         return await conn.postTransactionCommit(txSigned) // Return transaction receipt
     } catch (err) {
-        console.log(err);
+        
         res.status(500).json(err).end();
     }
 }

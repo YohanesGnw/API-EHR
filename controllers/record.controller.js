@@ -19,8 +19,11 @@ async function create(req, res) {
     res.status(200).json(response).end()
 }
 
-function read(req, res) {
-    console.log(req.params)
+async function read(req, res) {
+    let response = {}
+    response.bdb = await bdb.read(req.params)
+
+    res.status(200).json(response).end()
 }
 
 async function index(req, res) {

@@ -10,18 +10,18 @@ module.exports = (route) => {
     route.get('', (req, res) => res.redirect('/patients'))
 
     // Routing for Patient CRUD functions
-    route.get('/patients', (req, res) => console.log("Get all patients"))
-    route.get('/patients/:patient', (req, res) => {})
+    route.get('/patients', (req, res) => patient.index(req, res))
+    route.get('/patients/:patient', (req, res) => patient.read(req, res))
     route.post('/patients', (req, res) => patient.create(req, res))
 
     // Routing for Doctor CRUD functions
-    route.get('/doctors', (req, res) => console.log("Get all patients"))
-    route.get('/doctors/:doctor', (req, res) => console.log(`Get a patient with id = ${req.params}`))
+    route.get('/doctors', (req, res) => doctor.index(req, res))
+    route.get('/doctors/:doctor', (req, res) => doctor.read(req, res))
     route.post('/doctors', (req, res) => doctor.create(req, res))
 
     // Routing for Hospital CRUD functions
-    route.get('/hospitals', (req, res) => console.log("Get all hospitals"))
-    route.get('/hospitals/:hospital', (req, res) => console.log(`Get a hospital with id = ${req.params}`))
+    route.get('/hospitals', (req, res) => hospital.index(req, res))
+    route.get('/hospitals/:hospital', (req, res) => hospital.read(req, res))
     route.post('/hospitals', (req, res) => hospital.create(req, res))
     
     // Routing for Diseases CRUD functions

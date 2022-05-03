@@ -1,5 +1,6 @@
 const bdb = require('../bdb'),
     hospitals = bdb.mongoose.connection.collection('hospitals'),
+    assets = bdb.assets,
     Doctor = require('../models/Doctor');
 
 async function create(data, res) {
@@ -21,6 +22,19 @@ async function create(data, res) {
     )
 }
 
+async function read(data) {
+    return await assets.findOne({
+        'data.model': "Doctor",
+        'data.bc_address': data.doctor
+    });
+}
+
+async function index(data) {
+    return assets.findOne({
+        'data.model': "Doctor",
+    });
+}
+
 module.exports = {
-    create
+    create, read, index
 }
