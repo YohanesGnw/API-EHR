@@ -26,14 +26,28 @@ async function read(data) {
     });
 }
 
+async function readbyPatient(data) {
+    return await assets.find({
+        'data.model': "Disease",
+        'data.patient_bc_address': data.patient.bc_address
+    }).toArray();
+}
+
 function index(data) {
     return assets.find({
         'data.model': "Disease",
-        'data.patient_bc_address': data.patient.bc_address,
-        'data.hospital_bc_address': data.hospital.bc_address
+        'data.patient_bc_address': data.patient
+    }).toArray()
+}
+
+function indexbyHospital(data) {
+    return assets.find({
+        'data.model': "Disease",
+        'data.patient_bc_address': data.patient,
+        'data.hospital_bc_address': data.hospital,
     }).toArray()
 }
 
 module.exports = {
-    create, read, index
+    create, read, index, indexbyHospital, readbyPatient
 }

@@ -1,6 +1,9 @@
 const bdb = require('../bdb'),
     driver = bdb.driver,
     assets = bdb.assets,
+    controllers = {
+        disease: require('../controllers/disease.controller')
+    },
     model = require('../models/Hospital');
 
 async function create(data, res) {
@@ -42,9 +45,27 @@ async function read(data) {
 }
 
 async function index(data) {
-    return assets.findOne({
-        'data.model': "Hospital"
-    });
+
+    const disease = await controllers.disease.readbyPatient({
+        patient: {
+            bc_address: data.patient
+        }
+    })
+    let datas = new Set();
+    for (x = 0; x < disease.length; x++) {
+        let hospitals = await getHospital(disease[x]);
+        for(i = 0; i < hospitals.length; ++i) {
+            datas.add(hospitals[i].data.name);
+        };
+    }
+    return Array.from(datas);
+}
+
+async function getHospital(disease) {
+    return await assets.find({
+        'data.model': "Hospital",
+        'data.bc_address': disease.data.hospital_bc_address
+    }).toArray()
 }
 
 module.exports = {

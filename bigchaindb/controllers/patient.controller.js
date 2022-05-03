@@ -34,9 +34,9 @@ async function read(data) {
 }
 
 async function index(data) {
-    return assets.findOne({
+    return assets.find({
         'data.model': "Patient",
-    });
+    }).toArray();
 }
 
 
