@@ -11,11 +11,13 @@ module.exports = (route) => {
 
     // Routing for Patient CRUD functions
     route.get('/patients', (req, res) => patient.index(req, res))
+    route.get('/patients/login', (req, res) => patient.login(req, res))
     route.get('/patients/:patient', (req, res) => patient.read(req, res))
     route.post('/patients', (req, res) => patient.create(req, res))
 
     // Routing for Doctor CRUD functions
     route.get('/doctors', (req, res) => doctor.index(req, res))
+    route.get('/doctors/login', (req, res) => doctor.login(req, res))
     route.get('/doctors/:doctor', (req, res) => doctor.read(req, res))
     route.post('/doctors', (req, res) => doctor.create(req, res))
 
@@ -28,7 +30,6 @@ module.exports = (route) => {
     // Routing for Diseases CRUD functions
     route.get('/patients/:patient' +
         '/diseases', (req, res) => disease.index(req, res))
-
     route.get('/patients/:patient' +
         '/hospitals/:hospital' +
         '/diseases', (req, res) => disease.indexbyHospital(req, res))
@@ -42,5 +43,8 @@ module.exports = (route) => {
         '/hospitals/:hospital' +
         '/diseases/:disease' +
         '/records/:date', (req, res) => record.read(req, res))
+    route.get('/patients/:patient' +
+        '/diseases/:disease' +
+        '/records', (req, res) => record.indexbyDisease(req, res))
     route.post('/records', (req, res) => record.create(req, res))
 }

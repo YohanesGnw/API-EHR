@@ -1,6 +1,7 @@
 const bdb = require('../bdb'),
     hospitals = bdb.mongoose.connection.collection('hospitals'),
     controllers = {disease: require('../controllers/disease.controller')},
+    assets = bdb.assets,
     Record = require("../models/Record");
 
 async function create(data, res) {
@@ -51,6 +52,31 @@ async function index(data) {
     }).toArray();
 }
 
+async function indexbyDisease(data) {
+    const disease = await controllers.disease.indexbyDisease({
+        patient: {bc_address: data.patient},
+        disease: {name: data.disease}
+    })
+
+    let datas = []
+
+    for (x = 0; x < disease.length; x++) {
+        let records = await getRecord(disease[x]);
+        for(i = 0; i < records.length; ++i) {
+            datas.push(records[i].data);
+        };
+    }
+    
+    return datas
+}
+
+async function getRecord(disease) {
+    return await assets.find({
+        'data.model': "Record",
+        'data.disease_id': disease.data._id
+    }).toArray();
+}
+
 async function read(data) {
 
     const disease = await controllers.disease.read({
@@ -66,8 +92,11 @@ async function read(data) {
     });
 }
 
+
+
 module.exports = {
     create,
     index,
-    read
+    read,
+    indexbyDisease
 }

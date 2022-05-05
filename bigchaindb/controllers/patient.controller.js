@@ -33,6 +33,14 @@ async function read(data) {
     });
 }
 
+async function login(data) {
+    return await assets.findOne({
+        'data.model': "Patient",
+        'data.email': data.email,
+        'data.password': data.password
+    });
+}
+
 async function index(data) {
     return assets.find({
         'data.model': "Patient",
@@ -40,6 +48,7 @@ async function index(data) {
 }
 
 
+
 module.exports = {
-    create, read, index
+    create, read, index, login
 }

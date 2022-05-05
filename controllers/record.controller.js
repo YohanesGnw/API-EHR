@@ -34,8 +34,17 @@ async function index(req, res) {
     res.status(200).json(response).end()
 }
 
+async function indexbyDisease(req, res) {
+    let response = {}
+    response.bdb = await bdb.indexbyDisease(req.params)
+    console.log("response:", response)
+
+    res.status(200).json(response).end()
+}
+
 module.exports = {
     create,
     read,
-    index
+    index,
+    indexbyDisease
 }

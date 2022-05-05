@@ -26,18 +26,18 @@ async function read(data) {
     });
 }
 
-async function readbyPatient(data) {
-    return await assets.find({
-        'data.model': "Disease",
-        'data.patient_bc_address': data.patient.bc_address
-    }).toArray();
-}
-
 function index(data) {
     return assets.find({
         'data.model': "Disease",
         'data.patient_bc_address': data.patient
     }).toArray()
+}
+
+async function indexbyPatient(data) {
+    return await assets.find({
+        'data.model': "Disease",
+        'data.patient_bc_address': data.patient.bc_address
+    }).toArray();
 }
 
 function indexbyHospital(data) {
@@ -48,6 +48,14 @@ function indexbyHospital(data) {
     }).toArray()
 }
 
+function indexbyDisease(data) {
+    return assets.find({
+        'data.model': "Disease",
+        'data.patient_bc_address': data.patient.bc_address,
+        'data.name': data.disease.name
+    }).toArray()
+}
+
 module.exports = {
-    create, read, index, indexbyHospital, readbyPatient
+    create, read, index, indexbyHospital, indexbyPatient, indexbyDisease
 }

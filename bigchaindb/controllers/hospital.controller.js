@@ -46,7 +46,7 @@ async function read(data) {
 
 async function index(data) {
 
-    const disease = await controllers.disease.readbyPatient({
+    const disease = await controllers.disease.indexbyPatient({
         patient: {
             bc_address: data.patient
         }
