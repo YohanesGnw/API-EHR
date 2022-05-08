@@ -14,6 +14,11 @@ const schema = new mongoose.Schema({
             required: true,
             unique: true
         },
+        doctor_bc_address: {
+            type: String,
+            required: true,
+            unique: true
+        },
         date: {
             type: Date,
             default: Date.now()

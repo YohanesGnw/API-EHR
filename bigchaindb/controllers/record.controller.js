@@ -6,7 +6,7 @@ const bdb = require('../bdb'),
 
 async function create(data, res) {
     data.hospital = await hospitals.findOne({
-        'bc_address': data.hospital.bc_address
+        'bc_address': data.hospital.bc_addresses
     })
 
     let disease = await controllers.disease.read(data)
@@ -24,7 +24,8 @@ async function create(data, res) {
     const record = new Record({
         disease_id: disease.data._id,
         diagnose: data.diagnose,
-        bc_tx_address: data.bc_tx_address
+        bc_tx_address: data.bc_tx_address,
+        doctor_bc_address: data.doctor.bc_address
     })
 
     const response = await bdb.create_tx(
