@@ -9,6 +9,10 @@ async function create(data) {
         name: data.cipher.disease
     })
 
+    const metadata = {
+        disease: data.metadata.disease
+    }
+
     return bdb.create_tx(
         disease,
         null,
