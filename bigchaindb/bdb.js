@@ -7,13 +7,6 @@ const driver = require('bigchaindb-driver'),
 
 async function create_tx(data, metadata, privateKey, publicKey, res) {
     try {
-        // I was trying to make multiple outputs for 1 assets (future works)
-
-        // let tx_conditions = [];
-        //
-        // for (let i = 0; i < publicKeys.length; i++)
-        //     tx_conditions[i] = transaction.makeEd25519Condition(publicKeys[i])
-
         const tx = transaction.makeCreateTransaction(
             data,
             metadata,
