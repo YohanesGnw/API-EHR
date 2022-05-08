@@ -15,7 +15,7 @@ async function create(data) {
 
     return bdb.create_tx(
         disease,
-        null,
+        metadata,
         data.hospital.ed25519_private_key,
         data.hospital.ed25519_public_key
     )

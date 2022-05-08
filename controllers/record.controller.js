@@ -11,7 +11,7 @@ async function create(req, res) {
     const response = {}
     // response.bc = await bc.create(body.bc, res)
 
-    // body.bdb.bc_tx_address = response.bc.
+    // body.bc_tx_address = response.bc.
     body.bc_tx_address = "tx_12345";
 
     response.bdb = await bdb.create(body, res)
