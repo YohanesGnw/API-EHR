@@ -1,6 +1,7 @@
 const bdb = require('../bdb'),
     driver = bdb.driver,
     assets = bdb.assets,
+    hospital = bdb.hospital,
     controllers = {
         disease: require('../controllers/disease.controller')
     },
@@ -44,6 +45,12 @@ async function read(data) {
     });
 }
 
+async function readLocal(data) {
+    return await hospital.findOne({
+        'bc_address': data.hospital
+    });
+}
+
 async function index(data) {
 
     const disease = await controllers.disease.indexbyPatient({
@@ -71,5 +78,6 @@ async function getHospital(disease) {
 module.exports = {
     create,
     read,
-    index
+    index,
+    readLocal
 }
