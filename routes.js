@@ -12,7 +12,7 @@ module.exports = (route) => {
     // Routing for Patient CRUD functions
     route.get('/patients', (req, res) => patient.index(req, res))
     route.get('/patients/login', (req, res) => patient.login(req, res))
-    route.get('/patients/:id', (req, res) => patient.read(req, res))
+    route.get('/patients/:patient', (req, res) => patient.read(req, res))
     route.post('/patients', (req, res) => patient.create(req, res))
 
     // Routing for Doctor CRUD functions
@@ -30,14 +30,14 @@ module.exports = (route) => {
     route.post('/hospitals', (req, res) => hospital.create(req, res))
 
     // Routing for Diseases CRUD functions
-    route.get('/patients/:idpatient' +
+    route.get('/patients/:patient' +
         '/diseases', (req, res) => disease.index(req, res))
-    route.get('/patients/:patientid' +
-        '/hospitals/:hospitalid' +
+    route.get('/patients/:patient' +
+        '/hospitals/:hospital' +
         '/diseases', (req, res) => disease.indexbyHospital(req, res))
-    route.get('/patients/:patientid' +
-        '/hospitals/:hospitalid' +
-        '/diseases/:name', (req, res) => disease.read(req, res))
+    route.get('/patients/:patient' +
+        '/hospitals/:hospital' +
+        '/diseases/:disease', (req, res) => disease.read(req, res))
 
     // Routing for Records CRUD functions
     route.get('/patients/:patient' +

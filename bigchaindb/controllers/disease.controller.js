@@ -33,9 +33,9 @@ async function readforRecord(data) {
 async function read(data) {
     let disease = await assets.findOne({
         'data.model': "Disease",
-        'data.patient_bc_address': data.patientid,
-        'data.hospital_bc_address': data.hospitalid,
-        'data.name': data.name
+        'data.patient_bc_address': data.patient,
+        'data.hospital_bc_address': data.hospital,
+        'data.name': data.disease
     });
 
     let diseaseData = {
@@ -51,7 +51,7 @@ async function read(data) {
 async function index(data) {
     let disease = await assets.find({
         'data.model': "Disease",
-        'data.patient_bc_address': data.idpatient
+        'data.patient_bc_address': data.patient
     }).toArray();
 
     let hospitalMap = {};
@@ -100,8 +100,8 @@ async function indexbyHospital(data) {
     let datas = []
     let disease = await assets.find({
         'data.model': "Disease",
-        'data.patient_bc_address': data.patientid,
-        'data.hospital_bc_address': data.hospitalid,
+        'data.patient_bc_address': data.patient,
+        'data.hospital_bc_address': data.hospital,
     }).toArray();
 
     for (let i = 0; i < disease.length; i++) {
