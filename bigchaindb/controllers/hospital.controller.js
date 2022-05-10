@@ -72,7 +72,7 @@ async function getHospital(disease) {
     return await assets.find({
         'data.model': "Hospital",
         'data.bc_address': disease.data.hospital_bc_address
-    }).toArray()
+    }).toArray();
 }
 
 module.exports = {
