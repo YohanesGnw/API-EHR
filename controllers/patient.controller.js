@@ -16,6 +16,7 @@ async function read(req, res) {
     let response = {}
     response = await bdb.read(req.params)
 
+    console.log(response)
     res.status(200).json(response.data).end()
 }
 

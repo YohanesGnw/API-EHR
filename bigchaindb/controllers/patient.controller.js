@@ -29,7 +29,7 @@ async function create(data, res) {
 async function read(data) {
     return await assets.findOne({
         'data.model': "Patient",
-        'data.bc_address': data.patient
+        'data.bc_address': data.id
     });
 }
 

@@ -12,7 +12,7 @@ module.exports = (route) => {
     // Routing for Patient CRUD functions
     route.get('/patients', (req, res) => patient.index(req, res))
     route.get('/patients/login', (req, res) => patient.login(req, res))
-    route.get('/patients/:patient', (req, res) => patient.read(req, res))
+    route.get('/patients/:id', (req, res) => patient.read(req, res))
     route.post('/patients', (req, res) => patient.create(req, res))
 
     // Routing for Doctor CRUD functions
