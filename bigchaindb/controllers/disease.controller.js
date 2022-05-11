@@ -28,6 +28,7 @@ async function readforRecord(data) {
         'data.hospital_bc_address': data.bc_addresses.hospital,
         'data.name': data.cipher.disease
     });
+    
 }
 
 async function read(data) {

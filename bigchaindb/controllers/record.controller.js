@@ -45,12 +45,11 @@ async function create(data, res) {
 }
 
 async function index(data) {
-    const disease = await controllers.disease.read({
-        patient: {bc_address: data.patient},
-        hospital: {bc_address: data.hospital},
-        disease: {name: data.disease}
+    const disease = await controllers.disease.readforRecord({
+        bc_addresses: {patient: data.patient,
+            hospital: data.hospital},
+        cipher: {disease: data.disease}
     })
-
     return bdb.assets.find({
         'data.model': "Record",
         'data.disease_id': disease.data._id
