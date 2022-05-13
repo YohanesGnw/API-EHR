@@ -56,7 +56,7 @@ async function index(data) {
     }).toArray();
 
     let hospitalMap = {};
-    // fix this
+    // can't use index function from hospital controller
     let list_hospital = await assets.find({
         'data.model': "Hospital"
     }).toArray();

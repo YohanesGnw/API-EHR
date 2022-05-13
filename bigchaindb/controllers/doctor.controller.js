@@ -29,6 +29,13 @@ async function read(data) {
     });
 }
 
+async function readforRecord(data) {
+    return await assets.findOne({
+        'data.model': "Doctor",
+        'data.bc_address': data
+    });
+}
+
 async function login(data) {
     return await assets.findOne({
         'data.model': "Doctor",
@@ -44,5 +51,5 @@ async function index(data) {
 }
 
 module.exports = {
-    create, read, index, login
+    create, read, index, login, readforRecord
 }
