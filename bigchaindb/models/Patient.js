@@ -5,6 +5,20 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true,
+        unique: true
+    },
     bc_address: {
         type: String,
         required: true,
@@ -28,6 +42,16 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    ed25519_private_key: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    iv: {
+        type: String,
+        required: true,
+        unique: true
     },
     model: {
         type: String,

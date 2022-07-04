@@ -11,11 +11,42 @@ async function create(req, res) {
     res.status(200).json(response);
 }
 
-function read(req, res) {
+async function read(req, res) {
+    let response = {}
+    response = await bdb.read(req.params)
 
+    res.status(200).json(response.data).end()
+}
+
+async function readLocal(req, res) {
+    let response = {}
+    response = await bdb.readLocal(req.params)
+    res.status(200).json(response).end()
+}
+
+async function getAll(req, res) {
+    let response = {}
+    response = await bdb.getAll()
+
+    //bersihin
+    response = response.map(function All(params) {
+        return params.data
+    })
+    console.log(response)
+    res.status(200).json(response).end()
+}
+
+async function index(req, res) {
+    let response = {}
+    response = await bdb.index(req.params)
+
+    res.status(200).json(response).end()
 }
 
 module.exports = {
     create,
-    read
+    read,
+    index,
+    readLocal,
+    getAll
 }

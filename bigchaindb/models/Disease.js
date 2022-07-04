@@ -13,6 +13,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    date: {
+        type: String,
+        default: Date.now()
+    },
     model: {
         type: String,
         default: "Disease"

@@ -2,6 +2,7 @@ const conn = require('../bc.connection'),
     methods = conn.contract.methods;
 
 async function create(data) {
+    console.log(methods)
     return await methods.create(
         data.patient,
         data.doctor,
