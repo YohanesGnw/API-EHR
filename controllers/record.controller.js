@@ -21,7 +21,7 @@ async function create(req, res) {
 
 async function read(req, res) {
     let response = {}
-    response.bdb = await bdb.read(req.params)
+    response = await bdb.read(req.params)
 
     res.status(200).json(response).end()
 }
@@ -36,15 +36,23 @@ async function index(req, res) {
 
 async function indexbyDisease(req, res) {
     let response = {}
-    response.bdb = await bdb.indexbyDisease(req.params)
+    response = await bdb.indexbyDisease(req.params)
     console.log("response:", response)
 
     res.status(200).json(response).end()
 }
 
+async function readbyDisease(req, res) {
+    let response = {}
+    response = await bdb.readbyDisease(req.query)
+    console.log("response:", response)
+
+    res.status(200).json(response).end()
+}
 module.exports = {
     create,
     read,
     index,
-    indexbyDisease
+    indexbyDisease,
+    readbyDisease
 }

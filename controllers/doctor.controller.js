@@ -13,21 +13,21 @@ async function create(req, res) {
 
 async function read(req, res) {
     let response = {}
-    response.bdb = await bdb.read(req.params)
+    response = await bdb.read(req.params)
 
     res.status(200).json(response).end()
 }
 
 async function login(req, res) {
     let response = {}
-    response.bdb = await bdb.read(req.query)
+    response = await bdb.login(req.query)
 
     res.status(200).json(response).end()
 }
 
 async function index(req, res) {
     let response = {}
-    response.bdb = await bdb.index(req.params)
+    response = await bdb.index(req.params)
     console.log("response:", response)
 
     res.status(200).json(response).end()

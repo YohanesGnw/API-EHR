@@ -28,7 +28,7 @@ async function login(req, res) {
 
 async function index(req, res) {
     let response = {}
-    response.bdb = await bdb.index(req.params)
+    response = await bdb.index(req.params)
     console.log("response:", response)
 
     res.status(200).json(response).end()

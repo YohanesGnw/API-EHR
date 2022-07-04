@@ -14,7 +14,8 @@ async function create(data, res) {
             dob: data.dob,
             gender: data.gender,
             ecdh_public_key: data.ecdh.public_key,
-            ed25519_public_key: keys.publicKey
+            ed25519_public_key: keys.publicKey,
+            iv: data.iv
         });
 
     return bdb.create_tx(
@@ -46,8 +47,6 @@ async function index(data) {
         'data.model': "Patient",
     }).toArray();
 }
-
-
 
 module.exports = {
     create, read, index, login

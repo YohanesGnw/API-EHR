@@ -51,6 +51,12 @@ async function readLocal(data) {
     });
 }
 
+async function getAll() {
+    return await assets.find({
+        'data.model': "Hospital"
+    }).toArray();
+}
+
 async function index(data) {
 
     const disease = await controllers.disease.indexbyPatient({
@@ -79,5 +85,6 @@ module.exports = {
     create,
     read,
     index,
-    readLocal
+    readLocal,
+    getAll
 }

@@ -1,7 +1,7 @@
 const bdb = require('../bdb'),
     assets = bdb.assets,
     Disease = require('../models/Disease');
-
+    
 async function create(data) {
     const disease = new Disease({
         patient_bc_address: data.bc_addresses.patient,
@@ -28,7 +28,7 @@ async function readforRecord(data) {
         'data.hospital_bc_address': data.bc_addresses.hospital,
         'data.name': data.cipher.disease
     });
-    
+
 }
 
 async function read(data) {
@@ -38,7 +38,7 @@ async function read(data) {
         'data.hospital_bc_address': data.hospital,
         'data.name': data.disease
     });
-
+    
     let diseaseData = {
         'patient_bc_address': disease.data.patient_bc_address,
         'hospital_bc_address': disease.data.hospital_bc_address,
@@ -49,44 +49,108 @@ async function read(data) {
     return diseaseData
 }
 
-async function index(data) {
-    let disease = await assets.find({
+async function readforCreateRecord(data) {
+    let disease = await assets.findOne({
         'data.model': "Disease",
-        'data.patient_bc_address': data.patient
-    }).toArray();
+        'data.patient_bc_address': data.bc_addresses.patient,
+        'data.hospital_bc_address': data.bc_addresses.hospital,
+        'data.name': data.cipher.disease
+    });
 
-    let hospitalMap = {};
-    // can't use index function from hospital controller
-    let list_hospital = await assets.find({
-        'data.model': "Hospital"
-    }).toArray();
-
-    for (let i = 0; i < disease.length; ++i) {
-        if (!hospitalMap[disease[i].data.hospital_bc_address]) {
-            hospitalMap[disease[i].data.hospital_bc_address] = [];
+    if (disease === null) {
+        return disease
+    } else {
+        let diseaseData = {
+            'patient_bc_address': disease.data.patient_bc_address,
+            'hospital_bc_address': disease.data.hospital_bc_address,
+            'name': disease.data.name,
+            '_id': disease.data._id,
+            'metadata': disease.id
         }
-
-        hospitalMap[disease[i].data.hospital_bc_address].push({
-            'name': disease[i].data.name,
-            '_id': disease[i].data._id,
-            'encrypted': true
-        });
+        return diseaseData
     }
+}
+
+async function index(data, body) {
 
     let res = []
-    for (const [key, value] of Object.entries(hospitalMap)) {
-        let curHospital;
-        // can change to hit bdb every hospital
-        for (let i = 0; i < list_hospital.length; ++i) {
-            if (list_hospital[i].data.bc_address == key)
-                curHospital = list_hospital[i].data
-        }
-        res.push({
-            "hospital": curHospital,
-            "disease": value
-        });
-    }
+    if (Object.keys(body).length === 0) {
+        let disease = await assets.find({
+            'data.model': "Disease",
+            'data.patient_bc_address': data.patient
+        }).toArray();
 
+        let hospitalMap = {};
+        // can't use index function from hospital controller
+        let list_hospital = await assets.find({
+            'data.model': "Hospital"
+        }).toArray();
+
+        for (let i = 0; i < disease.length; ++i) {
+            if (!hospitalMap[disease[i].data.hospital_bc_address]) {
+                hospitalMap[disease[i].data.hospital_bc_address] = [];
+            }
+
+            hospitalMap[disease[i].data.hospital_bc_address].push({
+                'name': disease[i].data.name,
+                '_id': disease[i].data._id,
+                'date': disease[i].data.date,
+                'encrypted': true
+            });
+        }
+
+        for (const [key, value] of Object.entries(hospitalMap)) {
+            let curHospital;
+            // can change to hit bdb every hospital
+            for (let i = 0; i < list_hospital.length; ++i) {
+                if (list_hospital[i].data.bc_address == key)
+                    curHospital = list_hospital[i].data
+            }
+            res.push({
+                "hospital": curHospital,
+                "diseases": value
+            });
+        }
+    } else {
+        let disease = await assets.find({
+            'data.model': "Disease",
+            'data.patient_bc_address': data.patient
+        }).toArray();
+
+        let hospitalMap = {};
+        // can't use index function from hospital controller
+        let list_hospital = await assets.find({
+            'data.model': "Hospital"
+        }).toArray();
+
+        for (let i = 0; i < disease.length; ++i) {
+            if (body.hospitals.includes(disease[i].data.hospital_bc_address)) {
+                if (!hospitalMap[disease[i].data.hospital_bc_address]) {
+                    hospitalMap[disease[i].data.hospital_bc_address] = [];
+                }
+
+                hospitalMap[disease[i].data.hospital_bc_address].push({
+                    'name': disease[i].data.name,
+                    '_id': disease[i].data._id,
+                    'date': disease[i].data.date,
+                    'encrypted': true
+                });
+            }
+        }
+        
+        for (const [key, value] of Object.entries(hospitalMap)) {
+            let curHospital;
+            // can change to hit bdb every hospital
+            for (let i = 0; i < list_hospital.length; ++i) {
+                if (list_hospital[i].data.bc_address == key)
+                    curHospital = list_hospital[i].data
+            }
+            res.push({
+                "hospital": curHospital,
+                "diseases": value
+            });
+        }
+    }
     return res;
 }
 
@@ -132,5 +196,6 @@ module.exports = {
     index,
     indexbyHospital,
     indexbyPatient,
-    indexbyDisease
+    indexbyDisease,
+    readforCreateRecord
 }

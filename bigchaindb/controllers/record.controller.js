@@ -17,7 +17,7 @@ async function create(data, res) {
         'bc_address': data.bc_addresses.hospital
     })
 
-    let disease = await controllers.disease.read(data)
+    let disease = await controllers.disease.readforCreateRecord(data)
     let receipt = {}
 
     // Create Disease if not exists
@@ -116,23 +116,64 @@ async function getRecord(disease) {
 
 async function read(data) {
 
-    const disease = await controllers.disease.read({
-        patient: {
-            bc_address: data.patient
-        },
-        hospital: {
-            bc_address: data.hospital
-        },
-        disease: {
-            name: data.disease
-        },
-    })
+    const disease = await controllers.disease.read(data)
 
+    console.log(disease)
     return bdb.assets.findOne({
         'data.model': "Record",
-        'data.disease_id': disease.data._id,
+        'data.disease_id': disease._id,
         'data.date': data.date
     });
+}
+
+async function readbyDisease(data) {
+
+    allRecord = [];
+    if (typeof data.diseases === 'string') {
+        const records = await assets.find({
+            'data.model': "Record",
+            'data.disease_id': data.diseases
+        }).toArray();
+
+        for (x = 0; x < records.length; x++) {
+            const doctor = await controllers.doctor.readforRecord(records[x].data.doctor_bc_address)
+            
+            let record = {
+                'bc_tx_address': records[x].data.bc_tx_address,
+                'date': records[x].data.date,
+                'disease_id': records[x].data.disease_id,
+                'diagnose': records[x].data.diagnose,
+                'doctor_bc_address': records[x].data.doctor_bc_address,
+                'doctor': doctor.data,
+                'metadata': records[x].id,
+            }
+            allRecord.push(record)
+        }
+    } else {
+        for (a = 0; a < data.diseases.length; a++) {
+            console.log(data.diseases[a])
+            const records = await assets.find({
+                'data.model': "Record",
+                'data.disease_id': data.diseases[a]
+            }).toArray();
+
+            for (x = 0; x < records.length; x++) {
+                const doctor = await controllers.doctor.readforRecord(records[x].data.doctor_bc_address)
+
+                let record = {
+                    'bc_tx_address': records[x].data.bc_tx_address,
+                    'date': records[x].data.date,
+                    'disease_id': records[x].data.disease_id,
+                    'diagnose': records[x].data.diagnose,
+                    'doctor': doctor.data,
+                    'metadata': records[x].id,
+                }
+                allRecord.push(record)
+            }
+        }
+    }
+
+    return allRecord;
 }
 
 // const disease = await controllers.disease.readforRecord({
@@ -145,5 +186,6 @@ module.exports = {
     create,
     index,
     read,
-    indexbyDisease
+    indexbyDisease,
+    readbyDisease
 }

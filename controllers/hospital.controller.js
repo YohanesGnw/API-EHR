@@ -24,9 +24,21 @@ async function readLocal(req, res) {
     res.status(200).json(response).end()
 }
 
+async function getAll(req, res) {
+    let response = {}
+    response = await bdb.getAll()
+
+    //bersihin
+    response = response.map(function All(params) {
+        return params.data
+    })
+    console.log(response)
+    res.status(200).json(response).end()
+}
+
 async function index(req, res) {
     let response = {}
-    response.bdb = await bdb.index(req.params)
+    response = await bdb.index(req.params)
 
     res.status(200).json(response).end()
 }
@@ -35,5 +47,6 @@ module.exports = {
     create,
     read,
     index,
-    readLocal
+    readLocal,
+    getAll
 }
