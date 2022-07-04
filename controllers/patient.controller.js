@@ -23,7 +23,14 @@ async function login(req, res) {
     let response = {}
     response = await bdb.login(req.query)
 
-    res.status(200).json(response.data).end()
+    res.status(200).json(response).end()
+}
+
+async function update(req, res) {
+    let response = {}
+    response = await bdb.update(req.body)
+
+    res.status(200).json(response).end()
 }
 
 async function index(req, res) {
@@ -36,5 +43,5 @@ async function index(req, res) {
 
 
 module.exports = {
-    create, read, index, login
+    create, read, index, login, update
 }

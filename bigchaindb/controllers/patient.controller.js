@@ -1,11 +1,23 @@
 const bdb = require('../bdb'),
     driver = bdb.driver,
     assets = bdb.assets,
+    patient = bdb.patient,
     Patient = require('../models/Patient');
 
 async function create(data, res) {
     const keys = new driver.Ed25519Keypair(),
         patient = new Patient({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            bc_address: data.bc_address,
+            dob: data.dob,
+            gender: data.gender,
+            ecdh_public_key: data.ecdh.public_key,
+            ed25519_public_key: keys.publicKey,
+            iv: data.iv
+        }),
+        mdb_data = new Patient({
             name: data.name,
             email: data.email,
             password: data.password,
@@ -15,16 +27,15 @@ async function create(data, res) {
             gender: data.gender,
             ecdh_public_key: data.ecdh.public_key,
             ed25519_public_key: keys.publicKey,
+            ed25519_private_key: keys.privateKey,
             iv: data.iv
-        });
+        })
 
-    return bdb.create_tx(
-        patient,
-        null,
-        keys.privateKey,
-        keys.publicKey,
-        res
-    );
+    return {
+        mdb: await mdb_data.save(),
+        bdb: await bdb.create_tx(patient, null, keys.privateKey, keys.publicKey, res)
+    };
+
 }
 
 async function read(data) {
@@ -35,11 +46,28 @@ async function read(data) {
 }
 
 async function login(data) {
-    return await assets.findOne({
-        'data.model': "Patient",
-        'data.email': data.email,
-        'data.password': data.password
+    return await patient.findOne({
+        'model': "Patient",
+        'email': data.email,
+        'password': data.password
     });
+}
+
+async function update(data) {
+    let patient_data = await patient.findOne({
+        'model': "Patient",
+        'bc_address': data.bc_address
+    });
+
+    patient_data.password = data.password
+    patient_data.dob = data.dob
+    patient_data.gender = data.gender
+    patient_data.phone = data.phone
+
+    return patient.findOneAndReplace({
+        'model': "Patient",
+        'bc_address': data.bc_address
+    }, patient_data, null, (value) => {});
 }
 
 async function index(data) {
@@ -49,5 +77,9 @@ async function index(data) {
 }
 
 module.exports = {
-    create, read, index, login
+    create,
+    read,
+    index,
+    login,
+    update
 }

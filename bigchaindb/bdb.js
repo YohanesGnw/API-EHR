@@ -4,6 +4,7 @@ const driver = require('bigchaindb-driver'),
     mongoose = require('mongoose'),
     assets = mongoose.connection.collection('assets'),
     hospital = mongoose.connection.collection('hospitals'),
+    patient = mongoose.connection.collection('patients'),
     mdb_conn = mongoose.connect('mongodb://localhost:27017/bigchain');
 
 async function create_tx(data, metadata, privateKey, publicKey, res) {
@@ -29,5 +30,5 @@ async function create_tx(data, metadata, privateKey, publicKey, res) {
 }
 
 module.exports = {
-    conn, driver, create_tx, mdb_conn, assets, mongoose, hospital
+    conn, driver, create_tx, mdb_conn, assets, mongoose, hospital, patient
 }

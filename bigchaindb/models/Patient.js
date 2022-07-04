@@ -43,6 +43,11 @@ const schema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    ed25519_private_key: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     iv: {
         type: String,
         required: true,
