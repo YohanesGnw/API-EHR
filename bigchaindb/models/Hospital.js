@@ -25,6 +25,10 @@ const schema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    password: {
+        type: String,
+        required: true
+    },
     ecdh_public_key: {
         type: String,
         required: true,
@@ -45,6 +49,7 @@ const schema = new mongoose.Schema({
     },
     model: {
         type: String,
+        default: "Hospital"
     }
 });
 

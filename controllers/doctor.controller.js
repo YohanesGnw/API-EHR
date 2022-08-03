@@ -33,6 +33,14 @@ async function index(req, res) {
     res.status(200).json(response).end()
 }
 
+async function indexbyHospital(req, res) {
+    let response = {}
+    response = await bdb.readforHospital(req.params)
+    console.log("response:", response)
+
+    res.status(200).json(response).end()
+}
+
 module.exports = {
-    create, read, index, login
+    create, read, index, login, indexbyHospital
 }

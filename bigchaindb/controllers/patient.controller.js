@@ -64,10 +64,12 @@ async function update(data) {
     patient_data.gender = data.gender
     patient_data.phone = data.phone
 
-    return patient.findOneAndReplace({
+    patient.findOneAndReplace({
         'model': "Patient",
         'bc_address': data.bc_address
     }, patient_data, null, (value) => {});
+
+    return patient_data
 }
 
 async function index(data) {
