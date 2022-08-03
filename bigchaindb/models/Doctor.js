@@ -19,6 +19,10 @@ const schema = new mongoose.Schema({
             type: String,
             required: true
         },
+        hospital: {
+            type: String,
+            required: true
+        },
         dob: {
             type: Date,
             required: true

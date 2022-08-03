@@ -11,6 +11,12 @@ async function create(req, res) {
     res.status(200).json(response);
 }
 
+async function login(req, res) {
+    let response = {}
+    response = await bdb.login(req.query)
+    res.status(200).json(response).end()
+}
+
 async function read(req, res) {
     let response = {}
     response = await bdb.read(req.params)
@@ -48,5 +54,6 @@ module.exports = {
     read,
     index,
     readLocal,
-    getAll
+    getAll,
+    login
 }

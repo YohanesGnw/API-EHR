@@ -26,6 +26,7 @@ async function create(data, res) {
             email: data.email,
             address: data.address,
             phone: data.phone,
+            password: data.password,
             ecdh_public_key: data.ecdh_public_key,
             ecdh_private_key: data.ecdh_private_key,
             ed25519_public_key: keys.publicKey,
@@ -36,6 +37,14 @@ async function create(data, res) {
         mdb: await mdb_data.save(),
         bdb: await bdb.create_tx(hospital, null, keys.privateKey, keys.publicKey, res)
     };
+}
+
+async function login(data) {
+    return await hospital.findOne({
+        'model': "Hospital",
+        'email': data.email,
+        'password': data.password
+    });
 }
 
 async function read(data) {
@@ -86,5 +95,6 @@ module.exports = {
     read,
     index,
     readLocal,
-    getAll
+    getAll,
+    login
 }

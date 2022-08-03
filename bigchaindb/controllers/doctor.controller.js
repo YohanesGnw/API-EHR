@@ -10,6 +10,7 @@ async function create(data, res) {
         bc_address: data.bc_address,
         email: data.email,
         password: data.password,
+        hospital: data.hospital,
         dob: data.dob,
     })
 
@@ -44,6 +45,13 @@ async function login(data) {
     });
 }
 
+async function readforHospital(data) {
+    return assets.find({
+        'data.model': "Doctor",
+        'data.hospital': data.hospital
+    }).toArray();
+}
+
 async function index(data) {
     return assets.find({
         'data.model': "Doctor",
@@ -51,5 +59,5 @@ async function index(data) {
 }
 
 module.exports = {
-    create, read, index, login, readforRecord
+    create, read, index, login, readforRecord, readforHospital
 }
