@@ -1,26 +1,35 @@
 const bdb = require('../bdb'),
     hospitals = bdb.mongoose.connection.collection('hospitals'),
+    doctors = bdb.mongoose.connection.collection('doctors'),
     assets = bdb.assets,
-    Doctor = require('../models/Doctor');
+    driver = bdb.driver,
+    model = require('../models/Doctor');;
 
 async function create(data, res) {
-    const hospital = await hospitals.findOne()
-    const doctor = new Doctor({
+    const keys = new driver.Ed25519Keypair(),
+
+    doctor = new model({
+        name: data.name,
+        bc_address: data.bc_address,
+        email: data.email,
+        hospital: data.hospital,
+        dob: data.dob,
+        speciality: data.speciality
+    }),
+    mdb_data = new model({
         name: data.name,
         bc_address: data.bc_address,
         email: data.email,
         password: data.password,
         hospital: data.hospital,
         dob: data.dob,
+        speciality: data.speciality
     })
 
-    return bdb.create_tx(
-        doctor,
-        null,
-        hospital.ed25519_private_key,
-        hospital.ed25519_public_key,
-        res
-    )
+    return {
+        mdb: await mdb_data.save(),
+        bdb: await bdb.create_tx(doctor, null, keys.privateKey, keys.publicKey, res)
+    };
 }
 
 async function read(data) {
@@ -38,11 +47,22 @@ async function readforRecord(data) {
 }
 
 async function login(data) {
-    return await assets.findOne({
-        'data.model': "Doctor",
-        'data.email': data.email,
-        'data.password': data.password
-    });
+    
+    const doctor = await doctors.findOne({
+        'email': data.email,
+        'password': data.password
+    })
+    const hospital = await hospitals.findOne({
+        'email': data.email,
+        'password': data.password
+    })
+
+    if (doctor != null) {
+        return doctor;
+    } 
+    else{
+        return hospital;
+    }
 }
 
 async function readforHospital(data) {
