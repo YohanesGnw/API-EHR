@@ -30,7 +30,7 @@ async function create(data, res) {
             ed25519_private_key: keys.privateKey,
             iv: data.iv
         })
-
+        
     return {
         mdb: await mdb_data.save(),
         bdb: await bdb.create_tx(patient, null, keys.privateKey, keys.publicKey, res)

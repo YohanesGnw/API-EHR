@@ -27,6 +27,10 @@ const schema = new mongoose.Schema({
             type: Date,
             required: true
         },
+        speciality: {
+            type: String,
+            required: true
+        },
         model: {
             type: String,
             default: "Doctor"
