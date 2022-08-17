@@ -5,6 +5,8 @@ const bdb = require('../bdb'),
     Patient = require('../models/Patient');
 
 async function create(data, res) {
+    console.log(data)
+
     const keys = new driver.Ed25519Keypair(),
         patient = new Patient({
             name: data.name,
@@ -32,7 +34,7 @@ async function create(data, res) {
             ed25519_private_key: keys.privateKey,
             iv: data.iv
         })
-        
+
     return {
         mdb: await mdb_data.save(),
         bdb: await bdb.create_tx(patient, null, keys.privateKey, keys.publicKey, res)
@@ -69,7 +71,7 @@ async function update(data) {
     patient.findOneAndReplace({
         'model': "Patient",
         'bc_address': data.bc_address
-    }, patient_data, null, (value) => {});
+    }, patient_data, null, (value) => { });
 
     return patient_data
 }
