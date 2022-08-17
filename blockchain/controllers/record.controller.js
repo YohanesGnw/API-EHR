@@ -1,27 +1,33 @@
 const conn = require('../bc.connection'),
-    methods = conn.contract.methods;
+    abi = conn.web3.eth.abi,
+    contract = conn.contract,
+    methods = contract.methods;
 
 async function create(data) {
-    console.log(methods)
-    return await methods.create(
-        data.patient,
-        data.doctor,
-        data.disease,
-        data.detail,
+    sender = conn.hospital.sender
+    sender.from = data.bc_addresses.hospital
+
+    const status = 201
+    const receipt = await methods.create(
+        data.bc_addresses.patient,
+        data.bc_addresses.doctor,
+        data.metadata.disease,
+        data.metadata.diagnose,
         data.date
-    ).send(conn.hospital.sender);
+    ).send(sender);
+
+    return { status, receipt }
 }
 
 async function read(data) {
-    return await methods.read(
-        data.patient,
-        data.hospital,
-        data.disease,
-        data.date
-    ).call();
+    const create_params = contract.abi[0].inputs,
+        tx = await conn.web3.eth.getTransaction(data.tx)
+
+    return await abi.decodeParameters(create_params, tx.input.slice(10))
 }
 
 module.exports = {
     create,
     read
 }
+

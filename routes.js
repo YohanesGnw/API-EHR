@@ -32,7 +32,7 @@ module.exports = (route) => {
 
     route.get('/hospitals', (req, res) => hospital.getAll(req, res))
     route.post('/hospitals', (req, res) => hospital.create(req, res))
-    
+
     // Routing for Diseases CRUD functions
     route.get('/patients/:patient' +
         '/diseases', (req, res) => disease.index(req, res))
@@ -57,5 +57,10 @@ module.exports = (route) => {
         '/records', (req, res) => record.indexbyDisease(req, res))
     route.get('/records', (req, res) => record.readbyDisease(req, res))
     route.post('/records', (req, res) => record.create(req, res))
+
+    // Routing for timestamp
+    route.get('/time', (req, res) => {
+        res.status(200).json(Date.now()).end()
+    })
 
 }

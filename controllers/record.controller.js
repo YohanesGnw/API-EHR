@@ -8,11 +8,12 @@ const bdb = require('../bigchaindb/controllers/record.controller'),
 async function create(req, res) {
     const body = req.body
 
-    const response = {}
-    // response.bc = await bc.create(body.bc, res)
+    // Send metadata to Blockchain
+    const response = { bc: await bc.create(body, res) }
 
-    // body.bc_tx_address = response.bc.
-    body.bc_tx_address = "tx_12345";
+    body.cipher.bc_tx_address = response.bc.receipt.transactionHash
+
+    // body.bc_tx_address = "tx_12345";
 
     response.bdb = await bdb.create(body, res)
 

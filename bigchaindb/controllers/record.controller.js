@@ -18,6 +18,7 @@ async function create(data, res) {
     })
 
     let disease = await controllers.disease.readforCreateRecord(data)
+    console.log(disease)
     let receipt = {}
 
     // Create Disease if not exists
@@ -28,11 +29,12 @@ async function create(data, res) {
 
     receipt.disease = disease
 
+
     // Create Record
     const record = new Record({
-        disease_id: disease.data._id,
+        disease_id: disease._id,
         diagnose: data.cipher.diagnose,
-        bc_tx_address: data.bc_tx_address,
+        bc_tx_address: data.cipher.bc_tx_address,
         doctor_bc_address: data.bc_addresses.doctor
     })
 
@@ -137,7 +139,7 @@ async function readbyDisease(data) {
 
         for (x = 0; x < records.length; x++) {
             const doctor = await controllers.doctor.readforRecord(records[x].data.doctor_bc_address)
-            
+
             let record = {
                 'bc_tx_address': records[x].data.bc_tx_address,
                 'date': records[x].data.date,
