@@ -9,11 +9,11 @@ async function create(req, res) {
     const body = req.body
 
     // Send metadata to Blockchain
-    const response = { bc: await bc.create(body, res) }
+    // const response = { bc: await bc.create(body, res) }
 
-    body.cipher.bc_tx_address = response.bc.receipt.transactionHash
-
-    // body.bc_tx_address = "tx_12345";
+    // body.cipher.bc_tx_address = response.bc.receipt.transactionHash
+    const response = {}
+    body.bc_tx_address = "tx_12345";
 
     response.bdb = await bdb.create(body, res)
 
@@ -30,7 +30,6 @@ async function read(req, res) {
 async function index(req, res) {
     let response = {}
     response = await bdb.index(req.params)
-    console.log("response:", response)
 
     res.status(200).json(response).end()
 }
@@ -38,7 +37,6 @@ async function index(req, res) {
 async function indexbyDisease(req, res) {
     let response = {}
     response = await bdb.indexbyDisease(req.params)
-    console.log("response:", response)
 
     res.status(200).json(response).end()
 }
@@ -46,7 +44,6 @@ async function indexbyDisease(req, res) {
 async function readbyDisease(req, res) {
     let response = {}
     response = await bdb.readbyDisease(req.query)
-    console.log("response:", response)
 
     res.status(200).json(response).end()
 }

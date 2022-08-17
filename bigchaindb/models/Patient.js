@@ -19,6 +19,10 @@ const schema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    address:{
+        type: String,
+        required: true
+    },
     bc_address: {
         type: String,
         required: true,

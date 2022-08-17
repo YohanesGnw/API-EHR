@@ -1,6 +1,7 @@
 const {
     all
 } = require('express/lib/application');
+const Disease = require('../models/Disease');
 
 const bdb = require('../bdb'),
     hospitals = bdb.mongoose.connection.collection('hospitals'),
@@ -18,17 +19,15 @@ async function create(data, res) {
     })
 
     let disease = await controllers.disease.readforCreateRecord(data)
-    console.log(disease)
     let receipt = {}
 
     // Create Disease if not exists
     if (disease == null) {
         const response = await controllers.disease.create(data)
-        disease = response.asset
+        disease = response.asset.data
     }
 
     receipt.disease = disease
-
 
     // Create Record
     const record = new Record({

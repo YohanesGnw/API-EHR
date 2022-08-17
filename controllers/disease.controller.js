@@ -4,7 +4,6 @@ const bdb = require('../bigchaindb/controllers/disease.controller'),
 async function read(req, res) {
     let response = {}
     response = await bdb.read(req.params)
-    console.log("response:", response)
 
     res.status(200).json(response).end()
 }
@@ -12,7 +11,6 @@ async function read(req, res) {
 async function index(req, res) {
     let response = {}
     response = await bdb.index(req.params, req.body)
-    console.log("response:", response)
 
     res.status(200).json(response).end()
 }
@@ -20,7 +18,6 @@ async function index(req, res) {
 async function indexbyHospital(req, res) {
     let response = {}
     response = await bdb.indexbyHospital(req.params)
-    console.log("response:", response)
 
     res.status(200).json(response).end()
 }
